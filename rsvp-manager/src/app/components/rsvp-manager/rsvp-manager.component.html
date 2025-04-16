@@ -1,0 +1,73 @@
+<div class="rsvp-container mat-elevation-z4">
+  <h1>GameTime RSVP Manager</h1>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Player Name</mat-label>
+    <input
+      matInput
+      [(ngModel)]="playerName"
+      #playerNameInput="ngModel"
+      name="playerName"
+      required
+    />
+    <mat-error *ngIf="playerNameInput.invalid && playerNameInput.touched">
+      Player name is required.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Status</mat-label>
+    <mat-select [(value)]="status">
+      <mat-option *ngFor="let s of statuses" [value]="s">{{ s }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="submitRsvp()"
+    [disabled]="!playerName.trim()"
+  >
+    Submit RSVP
+  </button>
+
+  <section class="summary" *ngIf="stats.confirmed > 0">
+    <h2>Confirmed Players</h2>
+    <ul>
+      <li *ngFor="let player of rsvpService.getConfirmedAttendees()">
+        {{ player.name }}
+      </li>
+    </ul>
+  </section>
+
+  <section class="summary" *ngIf="stats.total > 0">
+    <h3>RSVP Summary</h3>
+    <table class="mat-elevation-z2 stats-table">
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Total</td>
+          <td>{{ stats.total }}</td>
+        </tr>
+        <tr>
+          <td>Confirmed (Yes)</td>
+          <td>{{ stats.confirmed }}</td>
+        </tr>
+        <tr>
+          <td>Declined (No)</td>
+          <td>{{ stats.declined }}</td>
+        </tr>
+        <tr>
+          <td>Maybe</td>
+          <td>{{ stats.maybe }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+</div>
+
